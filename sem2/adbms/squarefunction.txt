@@ -1,0 +1,39 @@
+create table squares(value number(3),square_value number(10));
+
+
+
+
+create or replace FUNCTION findSquare(num in number)
+Return number IS
+sq number(10);
+
+BEGIN
+sq:= num*num;
+return sq;
+END;
+/
+
+
+
+set serveroutput ON;
+
+DECLARE
+
+i number(3);
+sq number(10);
+
+BEGIN
+
+for i in 1..10
+LOOP
+sq:= findSquare(i);
+insert into squares values(i,sq);
+END LOOP;
+END;
+
+/
+
+
+
+
+select * from squares;

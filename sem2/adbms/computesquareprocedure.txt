@@ -1,0 +1,21 @@
+CREATE or REPLACE procedure compute_square(p_value in out number) IS
+
+BEGIN
+
+p_value:= p_value * p_value;
+END;
+
+
+/
+
+
+
+DECLARE
+i_value number(5);
+
+BEGIN
+i_value:= &a;
+dbms_output.Put_line('input value:'|| i_value);
+compute_square(i_value);
+dbms_output.Put_line('squared value:'|| i_value);
+END;

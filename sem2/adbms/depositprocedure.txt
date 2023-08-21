@@ -1,0 +1,47 @@
+create table customer(Account_number number(5) PRIMARY KEY,Balance number(10,2));
+
+
+insert into customer values('&Account_number','&Balance');
+
+
+
+
+
+CREATE or REPLACE procedure deposit(
+p_id in number,
+p_amt in number
+) IS
+
+BEGIN
+
+update customer 
+set Balance = Balance + p_amt 
+where Account_number = p_id;
+commit;
+
+dbms_output.Put_line('Deposit succesfull');
+
+END;
+
+DECLARE
+
+acc_num number(5);
+amount number(10,2);
+
+BEGIN
+
+acc_num:= &a;
+amount:= &b;
+deposit(acc_num,amount);
+commit;
+END;
+
+
+
+
+
+
+select * from customer;
+
+
+

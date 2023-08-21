@@ -1,0 +1,16 @@
+set serveroutput ON;
+DECLARE
+a number(5);
+area number(15,4);
+
+BEGIN
+a:=&a;
+
+if(a>0) then
+area:=3.14*power(a,2);
+dbms_output.Put_line('Area is '||' '||area);
+
+else
+dbms_output.Put_line('Area cannot be calculated');
+end if;
+end;

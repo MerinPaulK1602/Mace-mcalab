@@ -1,0 +1,16 @@
+set serveroutput ON;
+
+DECLARE
+n number := 1537;
+r number;
+
+BEGIN
+r :=mod(n,2);
+
+if r=0 then
+dbms_output.Put_line('Even');
+
+else
+dbms_output.Put_line('Odd');
+end if;
+end;

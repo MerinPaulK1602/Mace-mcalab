@@ -1,0 +1,49 @@
+create table customer(id number(4) PRIMARY KEY,name varchar(20),age number(4),salary number(6));
+
+
+
+
+insert into customer values('&id','&name','&age','&salary');
+
+
+
+select * from customer;
+
+
+
+
+set serveroutput ON;
+
+CREATE OR REPLACE TRIGGER display_salary_changes
+BEFORE DELETE OR INSERT OR UPDATE ON copy_customer
+
+FOR EACH ROW
+	WHEN(new.id>0)
+
+
+DECLARE
+	sal_diff number;
+
+
+BEGIN
+	sal_diff := :new.salary - :old.salary;
+	dbms_output.put_line('Old salary:'|| :old.salary);
+	dbms_output.put_line('New salary:'|| :new.salary);
+	dbms_output.put_line('Salary difference:'|| sal_diff);
+
+
+END;
+
+
+
+
+
+
+
+update copy_customer set salary=salary+5000 where id=103;
+
+
+
+
+select * from customer;
+

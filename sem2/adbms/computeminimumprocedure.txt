@@ -1,0 +1,32 @@
+CREATE or REPLACE procedure compute_minimum(
+p_value1 in number,
+p_value2 in number,
+p_minimum out number
+) AS
+
+BEGIN
+
+IF p_value1 < p_value2 THEN
+p_minimum:= p_value1;
+
+ELSE
+p_minimum:= p_value2;
+
+END IF;
+
+END;
+
+
+DECLARE
+
+v_value1 number(5);
+v_value2 number(5);
+v_minimum number;
+
+BEGIN
+v_value1:= &a;
+v_value2:= &b;
+
+compute_minimum(v_value1,v_value2,v_minimum);
+dbms_output.Put_line('the min value is:' || v_minimum);
+END;

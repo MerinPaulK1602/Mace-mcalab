@@ -1,0 +1,13 @@
+set serveroutput ON;
+DECLARE
+fac number :=1;
+n number :=&1;
+
+BEGIN
+while n > 0 loop
+fac:=n*fac;
+n:=n-1;
+end loop;
+
+dbms_output.Put_line(fac);
+end;

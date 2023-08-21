@@ -1,0 +1,16 @@
+CREATE or REPLACE FUNCTION string_reverse(input IN string)
+ Return string IS
+ string_reverse  string(20);
+ BEGIN
+ 
+ reversed_string:= ' ';
+ IF input is NULL THEN
+ RETURN NULL;
+ END IF;
+ for i in REVERSE 1..LENGTH(input)
+ LOOP
+ reversed_string:= string_reverse || SUBSTR(input,i,1);
+ END LOOP;
+ RETURN reversed_string;
+ END;
+    

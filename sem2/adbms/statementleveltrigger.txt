@@ -1,0 +1,40 @@
+create table employee(id number(4) PRIMARY KEY,name varchar(20),age number(4));
+
+
+
+insert into employee values('&id','&name','&age');
+
+
+
+
+create table testtable(action varchar(50),date_ date);
+
+
+
+
+
+
+create trigger t2 after insert or update on employee
+BEGIN
+
+IF inserting 
+	then insert into testtable values('insert done',SYSDATE);
+ELSE
+	insert into testtable values('update done',SYSDATE);
+
+END IF;
+END;
+
+
+
+
+
+insert into employee values('&id','&name','&age');
+
+
+
+
+select * from testtable;
+
+
+
