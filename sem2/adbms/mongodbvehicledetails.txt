@@ -1,0 +1,336 @@
+use Vehicle
+db.createCollection("Vehicle Details")
+db.VehicleDetails.insertMany(
+[
+{
+RegNo:"BRG446",
+Make:"Ford",
+Model:"Meteor",
+Year:2009,
+Colour:"White"
+},
+{
+RegNo:"VRG655",
+Make:"Bmw",
+Model:"Coupe",
+Year:2008,
+Colour:"Blue"
+},
+{
+RegNo:"NMT667",
+Make:"Mazda",
+Model:"Delivery Van",
+Year:2010,
+Colour:"Green"
+},
+{
+RegNo:"CCT899",
+Make:"Toyota",
+Model:"HiLuxe",
+Year:2009,
+Colour:"Red"
+},
+{
+RegNo:"FGR122",
+Make:"Mitsubishi",
+Model:"Magna",
+Year:2007,
+Colour:"Purple"
+}
+]
+)
+
+db.VehicleDetails.find().pretty()
+
+db.VehicleDetails.find({"Make":{$regex:/^T/}}).pretty()
+
+db.VehicleDetails.update(
+{RegNo:"FGR122"},
+{$set:{Colour:"Blue"}})
+
+db.VehicleDetails.find({RegNo:"FGR122"}).pretty()
+
+db.VehicleDetails.updateMany({},{$set:{EnNo:""}})
+
+db.VehicleDetails.aggregate([
+{$match:
+{Year:2009}},
+{$group:
+{_id:null,Total_Vehicles_Manufactured:{$sum:1}
+}}])
+
+db.VehicleDetails.deleteOne({RegNo:"BRG446"})
+db.VehicleDetails.find().pretty()
+
+
+db.createUser({user:"Ram",pwd:"password",
+roles:[{role:"read",db:"Vehicle"}]})
+
+
+
+
+
+
+
+
+
+OUTPUT
+------
+
+
+
+
+
+> use Vehicle
+switched to db Vehicle
+
+>  db.createCollection("VehicleDetails")
+{ "ok" : 1 }
+
+
+> db.VehicleDetails.insertMany(
+... [
+... {
+... RegNo:"BRG446",
+... Make:"Ford",
+... Model:"Meteor",
+... Year:2009,
+... Colour:"White"
+... },
+... {
+... RegNo:"VRG655",
+... Make:"Bmw",
+... Model:"Coupe",
+... Year:2008,
+... Colour:"Blue"
+... },
+... {
+... RegNo:"NMT667",
+... Make:"Mazda",
+... Model:"Delivery Van",
+... Year:2010,
+... Colour:"Green"
+... },
+... {
+... RegNo:"CCT899",
+... Make:"Toyota",
+... Model:"HiLuxe",
+... Year:2009,
+... Colour:"Red"
+... },
+... {
+... RegNo:"FGR122",
+... Make:"Mitsubishi",
+... Model:"Magna",
+... Year:2007,
+... Colour:"Purple"
+... }
+... ]
+... )
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("64e319cf2304391a7d9a6c49"),
+                ObjectId("64e319cf2304391a7d9a6c4a"),
+                ObjectId("64e319cf2304391a7d9a6c4b"),
+                ObjectId("64e319cf2304391a7d9a6c4c"),
+                ObjectId("64e319cf2304391a7d9a6c4d")
+        ]
+}
+> db.VehicleDetails.find().pretty()
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c49"),
+        "RegNo" : "BRG446",
+        "Make" : "Ford",
+        "Model" : "Meteor",
+        "Year" : 2009,
+        "Colour" : "White"
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4a"),
+        "RegNo" : "VRG655",
+        "Make" : "Bmw",
+        "Model" : "Coupe",
+        "Year" : 2008,
+        "Colour" : "Blue"
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4b"),
+        "RegNo" : "NMT667",
+        "Make" : "Mazda",
+        "Model" : "Delivery Van",
+        "Year" : 2010,
+        "Colour" : "Green"
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4c"),
+        "RegNo" : "CCT899",
+        "Make" : "Toyota",
+        "Model" : "HiLuxe",
+        "Year" : 2009,
+        "Colour" : "Red"
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4d"),
+        "RegNo" : "FGR122",
+        "Make" : "Mitsubishi",
+        "Model" : "Magna",
+        "Year" : 2007,
+        "Colour" : "Purple"
+}
+> db.VehicleDetails.find({"Make":{$regex:/^T/}}).pretty()
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4c"),
+        "RegNo" : "CCT899",
+        "Make" : "Toyota",
+        "Model" : "HiLuxe",
+        "Year" : 2009,
+        "Colour" : "Red"
+}
+
+
+
+
+> db.VehicleDetails.update(
+... {RegNo:"FGR122"},
+... {$set:{Colour:"Blue"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+>
+> db.VehicleDetails.find({RegNo:"FGR122"}).pretty()
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4d"),
+        "RegNo" : "FGR122",
+        "Make" : "Mitsubishi",
+        "Model" : "Magna",
+        "Year" : 2007,
+        "Colour" : "Blue"
+}
+
+> db.VehicleDetails.updateMany({},{$set:{EnNo:""}})
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 5 }
+> db.VehicleDetails.find().pretty()
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c49"),
+        "RegNo" : "BRG446",
+        "Make" : "Ford",
+        "Model" : "Meteor",
+        "Year" : 2009,
+        "Colour" : "White",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4a"),
+        "RegNo" : "VRG655",
+        "Make" : "Bmw",
+        "Model" : "Coupe",
+        "Year" : 2008,
+        "Colour" : "Blue",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4b"),
+        "RegNo" : "NMT667",
+        "Make" : "Mazda",
+        "Model" : "Delivery Van",
+        "Year" : 2010,
+        "Colour" : "Green",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4c"),
+        "RegNo" : "CCT899",
+        "Make" : "Toyota",
+        "Model" : "HiLuxe",
+        "Year" : 2009,
+        "Colour" : "Red",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4d"),
+        "RegNo" : "FGR122",
+        "Make" : "Mitsubishi",
+        "Model" : "Magna",
+        "Year" : 2007,
+        "Colour" : "Blue",
+        "EnNo" : ""
+}
+> db.VehicleDetails.aggregate([
+... {$match:
+... {Year:2009}},
+... {$group:
+... {_id:null,Total_Vehicles_Manufactured:{$sum:1}
+... }}])
+{ "_id" : null, "Total_Vehicles_Manufactured" : 2 }
+
+
+> db.VehicleDetails.deleteOne({RegNo:"BRG446"})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.VehicleDetails.find().pretty()
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4a"),
+        "RegNo" : "VRG655",
+        "Make" : "Bmw",
+        "Model" : "Coupe",
+        "Year" : 2008,
+        "Colour" : "Blue",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4b"),
+        "RegNo" : "NMT667",
+        "Make" : "Mazda",
+        "Model" : "Delivery Van",
+        "Year" : 2010,
+        "Colour" : "Green",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4c"),
+        "RegNo" : "CCT899",
+        "Make" : "Toyota",
+        "Model" : "HiLuxe",
+        "Year" : 2009,
+        "Colour" : "Red",
+        "EnNo" : ""
+}
+{
+        "_id" : ObjectId("64e319cf2304391a7d9a6c4d"),
+        "RegNo" : "FGR122",
+        "Make" : "Mitsubishi",
+        "Model" : "Magna",
+        "Year" : 2007,
+        "Colour" : "Blue",
+        "EnNo" : ""
+}
+
+
+> db.createUser({user:"Ram",pwd:"password",
+... roles:[{role:"read",db:"Vehicle"}]})
+Successfully added user: {
+        "user" : "Ram",
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "Vehicle"
+                }
+        ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

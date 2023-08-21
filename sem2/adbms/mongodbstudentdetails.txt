@@ -1,0 +1,361 @@
+ use Student
+
+
+db.createCollection("StudentDetails")
+
+
+
+db.StudentDetails.insertMany(
+[
+{
+RollNo:101,
+Name:"Anna",
+Age:20,
+Course:"MCA"
+},
+{
+RollNo:102,
+Name:"Catherine ",
+Age:21,
+Course:"MTECH"
+},
+{
+RollNo:103,
+Name:"Denna",
+Age:22,
+Course:"BTECH"
+},
+{
+RollNo:104,
+Name:"Sam",
+Age:25,
+Course:"MCA"
+},
+{
+RollNo:105,
+Name:"Karthik",
+Age:24,
+Course:"MCA"
+},
+{
+RollNo:106,
+Name:"Aravind",
+Age:20,
+Course:"MCA"
+}
+]
+)
+
+
+
+
+db.StudentDetails.find().pretty()
+
+
+db.StudentDetails.find({"Name":{$regex:/^A/}}).pretty()
+
+
+db.StudentDetails.update(
+{RollNo:106},
+{$set:{Course:"MTECH"}})
+
+db.StudentDetails.find({RollNo:106}).pretty()
+
+db.StudentDetails.updateMany({},{$set:{DOJ:new Date()}})
+
+db.StudentDetails.find().pretty()
+
+
+
+db.StudentDetails.aggregate(
+[
+{
+$match:{
+Course:"MCA"
+}
+},
+{
+$group:{
+_id:null,
+Total_MCA_Students:{$sum:1}
+}
+}
+]
+)
+
+
+
+db.StudentDetails.deleteOne({RollNo:104})
+
+
+db.createUser({user:"Mohan",pwd:"password",
+roles:[{role:"readWrite",db:"Vehicle"}]})
+
+
+
+
+
+
+
+OUTPUT
+------
+
+
+
+> use Student
+switched to db Student
+> db.createCollection("StudentDetails")
+{ "ok" : 1 }
+> db.StudentDetails.insertMany(
+... [
+... {
+... RollNo:101,
+... Name:"Anna",
+... Age:20,
+... Course:"MCA"
+... },
+... {
+... RollNo:102,
+... Name:"Catherine ",
+... Age:21,
+... Course:"MTECH"
+... },
+... {
+... RollNo:103,
+... Name:"Denna",
+... Age:22,
+... Course:"BTECH"
+... },
+... {
+... RollNo:104,
+... Name:"Sam",
+... Age:25,
+... Course:"MCA"
+... },
+... {
+... RollNo:105,
+... Name:"Karthik",
+... Age:24,
+... Course:"MCA"
+... },
+... {
+... RollNo:106,
+... Name:"Aravind",
+... Age:20,
+... Course:"MCA"
+... }
+... ]
+... )
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("64df31a5881ca90576e47323"),
+                ObjectId("64df31a5881ca90576e47324"),
+                ObjectId("64df31a5881ca90576e47325"),
+                ObjectId("64df31a5881ca90576e47326"),
+                ObjectId("64df31a5881ca90576e47327"),
+                ObjectId("64df31a5881ca90576e47328")
+        ]
+}
+> db.StudentDetails.find().pretty()
+{
+        "_id" : ObjectId("64df31a5881ca90576e47323"),
+        "RollNo" : 101,
+        "Name" : "Anna",
+        "Age" : 20,
+        "Course" : "MCA"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47324"),
+        "RollNo" : 102,
+        "Name" : "Catherine ",
+        "Age" : 21,
+        "Course" : "MTECH"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47325"),
+        "RollNo" : 103,
+        "Name" : "Denna",
+        "Age" : 22,
+        "Course" : "BTECH"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47326"),
+        "RollNo" : 104,
+        "Name" : "Sam",
+        "Age" : 25,
+        "Course" : "MCA"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47327"),
+        "RollNo" : 105,
+        "Name" : "Karthik",
+        "Age" : 24,
+        "Course" : "MCA"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47328"),
+        "RollNo" : 106,
+        "Name" : "Aravind",
+        "Age" : 20,
+        "Course" : "MCA"
+}
+
+> db.StudentDetails.find({"Name":{$regex:/^A/}}).pretty()
+{
+        "_id" : ObjectId("64df31a5881ca90576e47323"),
+        "RollNo" : 101,
+        "Name" : "Anna",
+        "Age" : 20,
+        "Course" : "MCA"
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47328"),
+        "RollNo" : 106,
+        "Name" : "Aravind",
+        "Age" : 20,
+        "Course" : "MCA"
+}
+
+> db.StudentDetails.update(
+... {RollNo:106},
+... {$set:{Course:"MTECH"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.StudentDetails.find({RollNo:106}).pretty()
+{
+        "_id" : ObjectId("64df31a5881ca90576e47328"),
+        "RollNo" : 106,
+        "Name" : "Aravind",
+        "Age" : 20,
+        "Course" : "MTECH"
+}
+
+
+> db.StudentDetails.find().pretty()
+{
+        "_id" : ObjectId("64df31a5881ca90576e47323"),
+        "RollNo" : 101,
+        "Name" : "Anna",
+        "Age" : 20,
+        "Course" : "MCA",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47324"),
+        "RollNo" : 102,
+        "Name" : "Catherine ",
+        "Age" : 21,
+        "Course" : "MTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47325"),
+        "RollNo" : 103,
+        "Name" : "Denna",
+        "Age" : 22,
+        "Course" : "BTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47326"),
+        "RollNo" : 104,
+        "Name" : "Sam",
+        "Age" : 25,
+        "Course" : "MCA",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47327"),
+        "RollNo" : 105,
+        "Name" : "Karthik",
+        "Age" : 24,
+        "Course" : "MCA",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47328"),
+        "RollNo" : 106,
+        "Name" : "Aravind",
+        "Age" : 20,
+        "Course" : "MTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+
+
+> db.StudentDetails.aggregate(
+... [
+... {
+... $match:{
+... Course:"MCA"
+... }
+... },
+... {
+... $group:{
+... _id:null,
+... Total_MCA_Students:{$sum:1}
+... }
+... }
+... ]
+... )
+{ "_id" : null, "Total_MCA_Students" : 3 }
+
+> db.StudentDetails.deleteOne({RollNo:104})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.StudentDetails.find().pretty()
+{
+        "_id" : ObjectId("64df31a5881ca90576e47323"),
+        "RollNo" : 101,
+        "Name" : "Anna",
+        "Age" : 20,
+        "Course" : "MCA",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47324"),
+        "RollNo" : 102,
+        "Name" : "Catherine ",
+        "Age" : 21,
+        "Course" : "MTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47325"),
+        "RollNo" : 103,
+        "Name" : "Denna",
+        "Age" : 22,
+        "Course" : "BTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47327"),
+        "RollNo" : 105,
+        "Name" : "Karthik",
+        "Age" : 24,
+        "Course" : "MCA",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+{
+        "_id" : ObjectId("64df31a5881ca90576e47328"),
+        "RollNo" : 106,
+        "Name" : "Aravind",
+        "Age" : 20,
+        "Course" : "MTECH",
+        "DOJ" : ISODate("2023-08-18T09:11:04.163Z")
+}
+
+
+ db.createUser({user:"Mohan",pwd:"password",
+... roles:[{role:"readWrite",db:"Vehicle"}]})
+Successfully added user: {
+        "user" : "Mohan",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "Vehicle"
+                }
+        ]
+}
+
+
+
+

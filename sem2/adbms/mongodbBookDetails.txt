@@ -1,0 +1,296 @@
+use Book
+
+db.createCollection("BookDetails")
+
+db.BookDetails.insertMany([
+{
+No:1,
+Title:"Data Structure",
+Author:"Lipschute",
+Subject:"DS",
+Publisher:"McGraw",
+Quality:4,
+Price:217.00
+},
+{
+No:2,
+Title:"DOS Guide",
+Author:"NORTRON",
+Subject:"OS",
+Publisher:"PHI",
+Quality:3,
+Price:175.00
+},
+{
+No:3,
+Title:"Turbo C++",
+Author:"Robort Lafore",
+Subject:"Prog",
+Publisher:"Galgotia",
+Quality:5,
+Price:270.00
+},
+{
+No:4,
+Title:"Dbase Dummies",
+Author:"Palmer",
+Subject:"DBMS",
+Publisher:"PustakM",
+Quality:7,
+Price:130.00
+},
+{
+No:5,
+Title:"Mastering Windows",
+Author:"Cowart",
+Subject:"OS",
+Publisher:"BPB",
+Quality:1,
+Price:225.00
+}
+])
+
+
+db.BookDetails.find().pretty()
+
+
+db.BookDetails.update(
+{No:2},
+{$set:{Author:"David"}})
+
+db.BookDetails.find({No:2}).pretty()
+
+db.BookDetails.aggregate([
+{$group:{_id:null,Total_Quantity:{$sum:"$Quality"}}}])
+
+ db.BookDetails.deleteOne({No:4})
+
+db.createUser({user:"Ram",pwd:"password",
+roles:[{role:"read",db:"Book"}]})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OUTPUT
+------
+
+
+
+
+
+
+
+
+
+> use Book
+switched to db Book
+>
+> db.createCollection("BookDetails")
+{ "ok" : 1 }
+>
+>
+>
+>
+>
+> db.BookDetails.insertMany([
+... {
+... No:1,
+... Title:"Data Structure",
+... Author:"Lipschute",
+... Subject:"DS",
+... Publisher:"McGraw",
+... Quality:4,
+... Price:217.00
+... },
+... {
+... No:2,
+... Title:"DOS Guide",
+... Author:"NORTRON",
+... Subject:"OS",
+... Publisher:"PHI",
+... Quality:3,
+... Price:175.00
+... },
+... {
+... No:3,
+... Title:"Turbo C++",
+... Author:"Robort Lafore",
+... Subject:"Prog",
+... Publisher:"Galgotia",
+... Quality:5,
+... Price:270.00
+... },
+... {
+... No:4,
+... Title:"Dbase Dummies",
+... Author:"Palmer",
+... Subject:"DBMS",
+... Publisher:"PustakM",
+... Quality:7,
+... Price:130.00
+... },
+... {
+... No:5,
+... Title:"Mastering Windows",
+... Author:"Cowart",
+... Subject:"OS",
+... Publisher:"BPB",
+... Quality:1,
+... Price:225.00
+... }
+... ])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("64e328212304391a7d9a6c4e"),
+                ObjectId("64e328212304391a7d9a6c4f"),
+                ObjectId("64e328212304391a7d9a6c50"),
+                ObjectId("64e328212304391a7d9a6c51"),
+                ObjectId("64e328212304391a7d9a6c52")
+        ]
+}
+> db.BookDetails.find().pretty()
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c4e"),
+        "No" : 1,
+        "Title" : "Data Structure",
+        "Author" : "Lipschute",
+        "Subject" : "DS",
+        "Publisher" : "McGraw",
+        "Quality" : 4,
+        "Price" : 217
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c4f"),
+        "No" : 2,
+        "Title" : "DOS Guide",
+        "Author" : "NORTRON",
+        "Subject" : "OS",
+        "Publisher" : "PHI",
+        "Quality" : 3,
+        "Price" : 175
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c50"),
+        "No" : 3,
+        "Title" : "Turbo C++",
+        "Author" : "Robort Lafore",
+        "Subject" : "Prog",
+        "Publisher" : "Galgotia",
+        "Quality" : 5,
+        "Price" : 270
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c51"),
+        "No" : 4,
+        "Title" : "Dbase Dummies",
+        "Author" : "Palmer",
+        "Subject" : "DBMS",
+        "Publisher" : "PustakM",
+        "Quality" : 7,
+        "Price" : 130
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c52"),
+        "No" : 5,
+        "Title" : "Mastering Windows",
+        "Author" : "Cowart",
+        "Subject" : "OS",
+        "Publisher" : "BPB",
+        "Quality" : 1,
+        "Price" : 225
+}
+> db.BookDetails.update(
+... {No:2},
+... {$set:{Author:"David"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+>
+>
+> db.BookDetails.find({No:2}).pretty()
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c4f"),
+        "No" : 2,
+        "Title" : "DOS Guide",
+        "Author" : "David",
+        "Subject" : "OS",
+        "Publisher" : "PHI",
+        "Quality" : 3,
+        "Price" : 175
+}
+>
+>
+>
+> db.BookDetails.aggregate([
+... {$group:{_id:null,Total_Quantity:{$sum:"$Quality"}}}])
+{ "_id" : null, "Total_Quantity" : 20 }
+>
+>
+> db.BookDetails.deleteOne({No:4})
+{ "acknowledged" : true, "deletedCount" : 1 }
+>
+>
+> db.BookDetails.find().pretty()
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c4e"),
+        "No" : 1,
+        "Title" : "Data Structure",
+        "Author" : "Lipschute",
+        "Subject" : "DS",
+        "Publisher" : "McGraw",
+        "Quality" : 4,
+        "Price" : 217
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c4f"),
+        "No" : 2,
+        "Title" : "DOS Guide",
+        "Author" : "David",
+        "Subject" : "OS",
+        "Publisher" : "PHI",
+        "Quality" : 3,
+        "Price" : 175
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c50"),
+        "No" : 3,
+        "Title" : "Turbo C++",
+        "Author" : "Robort Lafore",
+        "Subject" : "Prog",
+        "Publisher" : "Galgotia",
+        "Quality" : 5,
+        "Price" : 270
+}
+{
+        "_id" : ObjectId("64e328212304391a7d9a6c52"),
+        "No" : 5,
+        "Title" : "Mastering Windows",
+        "Author" : "Cowart",
+        "Subject" : "OS",
+        "Publisher" : "BPB",
+        "Quality" : 1,
+        "Price" : 225
+}
+> db.createUser({user:"Ram",pwd:"password",
+... roles:[{role:"read",db:"Book"}]})
+Successfully added user: {
+        "user" : "Ram",
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "Book"
+                }
+        ]
+}
+>
+

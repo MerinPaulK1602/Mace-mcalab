@@ -1,0 +1,1051 @@
+use Employee
+
+db.createCollection("EmployeeDetails")
+
+db.EmployeeDetails.insertMany(
+[
+{
+Empid:101,
+EmpName:"Ram",
+Salary:15000,
+Designation:"Clerk"
+},
+{
+Empid:102,
+EmpName:"Shyam",
+Salary:20000,
+Designation:"Administrator"
+},
+{
+Empid:103,
+EmpName:"Hari",
+Salary:10000,
+Designation:"Supervisor"
+},
+{
+Empid:104,
+EmpName:"Sita",
+Salary:15000,
+Designation:"Clerk"
+},
+{
+Empid:105,
+EmpName:"Rose",
+Salary:20000,
+Designation:"Administrator"
+},
+{
+Empid:106,
+EmpName:"Maria",
+Salary:25000,
+Designation:"Manager"
+}
+]
+)
+
+
+
+
+
+ db.EmployeeDetails.find().pretty()
+
+
+
+
+db.EmployeeDetails.find({"EmpName":{$regex:/^S/}}).pretty()
+
+
+[[[[[[[[db.EmployeeDetails.findOneAndUpdate(
+{EmpName:"Sita"},
+{$inc:{Salary:1000}})]]]]]
+
+
+
+[[[[[[ db.EmployeeDetails.update({Empid:104},{$unset:{"EmpSalary":""}})]]]]
+
+
+
+db.EmployeeDetails.update(
+{EmpName:"Sita"},
+{$inc:{Salary:1000}})
+
+
+
+db.EmployeeDetails.updateMany({},{$set:{DOJ:""}})
+
+
+
+db.EmployeeDetails.updateMany({},{$set:{DOJ:new Date()}})
+
+
+
+
+db.EmployeeDetails.aggregate([
+{
+$match:{
+Designation:"Clerk"
+}
+},
+{
+$group:{
+_id:null,
+TotalSalary:{$sum:"$Salary"}
+}
+}
+]
+)
+
+
+
+
+db.EmployeeDetails.deleteOne({Empid:106})
+
+
+
+
+db.createUser({user:"Mohan",pwd:"password",
+roles:[{role:"readWrite",db:"Employee"}]})
+
+
+db.system.users.find({user:"Mohan"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OUTPUT
+------
+
+
+
+
+
+
+
+
+
+MongoDB shell version: 3.2.22
+connecting to: test
+> use merindb
+switched to db merindb
+> show db
+2023-08-17T09:16:06.375+0530 E QUERY    [thread1] Error: don't know how to show [db] :
+shellHelper.show@src/mongo/shell/utils.js:885:11
+shellHelper@src/mongo/shell/utils.js:671:15
+@(shellhelp2):1:1
+
+> show dbs
+local  0.000GB
+> db.class.insertOne(
+... {
+... name:"merin",
+... age:23,
+... status:"student"
+... }
+... )
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("64dd9946f01e02f4390c5cdf")
+}
+> db.class.find().pretty()
+{
+        "_id" : ObjectId("64dd9946f01e02f4390c5cdf"),
+        "name" : "merin",
+        "age" : 23,
+        "status" : "student"
+}
+> db.createCollection("mca")
+{ "ok" : 1 }
+> db.mca.insertMany(
+... {
+... _id:1,
+... name:"anagha",
+... age:"23"
+... },
+... {
+... _id:2,
+... name:"anju",
+... age:22
+... },
+... {
+... _id:3,name:"vinsa",age:22
+... }
+... )
+2023-08-17T09:29:38.216+0530 E QUERY    [thread1] TypeError: documents.map is not a function :
+DBCollection.prototype.insertMany@src/mongo/shell/crud_api.js:260:1
+@(shell):1:1
+
+> db.mca.insertMany(
+... {
+... _id:1,
+... name:"anagha",
+... age:23
+... },
+... {
+... _id:2,
+...  name:"anju",
+...  age:22
+... },
+... {
+... _id:3,name:"vinsa",age:22
+... }
+... )
+2023-08-17T09:32:08.365+0530 E QUERY    [thread1] TypeError: documents.map is not a function :
+DBCollection.prototype.insertMany@src/mongo/shell/crud_api.js:260:1
+@(shell):1:1
+
+>  db.mca.insertMany(
+... [
+... {
+...  _id:1, name:"anagha", age:23
+... },
+... {
+...  _id:2, name:"anju", age:22
+... },
+... {
+... _id:3,name:"vinsa",age:22
+... }
+... ]
+... )
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+> db.mca.find()
+{ "_id" : 1, "name" : "anagha", "age" : 23 }
+{ "_id" : 2, "name" : "anju", "age" : 22 }
+{ "_id" : 3, "name" : "vinsa", "age" : 22 }
+> db.mca.find().pretty()
+{ "_id" : 1, "name" : "anagha", "age" : 23 }
+{ "_id" : 2, "name" : "anju", "age" : 22 }
+{ "_id" : 3, "name" : "vinsa", "age" : 22 }
+> db.mca.find({_id:2})
+{ "_id" : 2, "name" : "anju", "age" : 22 }
+> db.mca.update({'name':'anagha'},{$set:{'name':'Anakha K'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.mca.find({_id:1})
+{ "_id" : 1, "name" : "Anakha K", "age" : 23 }
+> db.mca.findOneAndUpdate({_id:2},{$set:{name:"Anju Krishna"}})
+{ "_id" : 2, "name" : "anju", "age" : 22 }
+>  db.mca.find({_id:2})
+{ "_id" : 2, "name" : "Anju Krishna", "age" : 22 }
+> db.mca.deleteOne({_id:3})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.mca.find().pretty()
+{ "_id" : 1, "name" : "Anakha K", "age" : 23 }
+{ "_id" : 2, "name" : "Anju Krishna", "age" : 22 }
+> db.mca.find({_id:{$gt:_id(1)}})
+2023-08-17T09:50:17.185+0530 E QUERY    [thread1] ReferenceError: _id is not defined :
+@(shell):1:19
+
+>  db.mca.find({_id:{$gt:_id('1')}})
+2023-08-17T09:50:41.488+0530 E QUERY    [thread1] ReferenceError: _id is not defined :
+@(shell):1:19
+
+> db.createCollection("employeedetails")
+{ "ok" : 1 }
+> db.employeedetails.insertMany(
+... [
+... {
+... first_name:"Radhika",
+... last_name:"Sharma",
+... age:27,
+... email:radhikasharma10@gmail.com
+... phone:8795436721
+... }])
+2023-08-17T09:57:12.202+0530 E QUERY    [thread1] SyntaxError: illegal character @(shell):7:21
+
+> db.employeedetails.insertMany(
+...  [
+... {
+... first_name:"Radhika",
+... last_name:"Sharma",
+... date_of_birth:"1996-06-10",
+... email:radhikasharma10@gmail.com,
+... phone:8795436721
+... }
+... ,
+... {
+... }
+... ])
+2023-08-17T10:00:39.135+0530 E QUERY    [thread1] SyntaxError: illegal character @(shell):7:21
+
+> db.employeedetails.insertMany(
+... [
+... {
+... first_name:"Radhika",
+... last_name:"Sharma",
+... date_of_birth:"1996-06-10",
+...  email:"radhikasharma10@gmail.com",
+... phone:"8795436721"
+... },
+... {
+... first_name:"Anjana",
+... last_name:"Dinesh",
+... date_of_birth:"1992-08-27",
+... email:"anjanadinesh27@gmail.com",
+... phone:"7863205179"
+... },
+... {
+... first_name:"Abin",
+... last_name:"Alias",
+... date_of_birth:"1999-11-20",
+... email:"abinaliasv20@gmail.com",
+... phone:"9456873210"
+... },
+... first_name:"Anzal",
+... last_name:"Nazar",
+... date_of_birth:"1998-02-19",
+... email:"anzalnazar19@gmail.com",
+... phone:"6871254056"
+... }])
+2023-08-17T10:10:15.866+0530 E QUERY    [thread1] SyntaxError: missing ] after element list @(shell):24:10
+
+>  db.employeedetails.insertMany(
+... [
+... {
+...  first_name:"Radhika",
+...  last_name:"Sharma",
+... date_of_birth:"1996-06-10",
+... email:"radhikasharma10@gmail.com",
+... phone:"8795436721"
+... },
+... {
+... first_name:"Anjana",
+... last_name:"Dinesh",
+... date_of_birth:"1992-08-27",
+... email:"anjanadinesh27@gmail.com",
+...  phone:"7863205179"
+... },
+... {
+... first_name:"Abin",
+... last_name:"Alias",
+... date_of_birth:"1999-11-20",
+... email:"abinaliasv20@gmail.com",
+... phone:"9456873210"
+... },
+... {
+... first_name:"Anzal",
+... last_name:"Nazar",
+... date_of_birth:"1998-02-19",
+... email:"anzalnazar19@gmail.com",
+... phone:"6871254056"
+... }
+... ]
+... )
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("64dda58af01e02f4390c5ce0"),
+                ObjectId("64dda58af01e02f4390c5ce1"),
+                ObjectId("64dda58af01e02f4390c5ce2"),
+                ObjectId("64dda58af01e02f4390c5ce3")
+        ]
+}
+> db.employeedetails.find()
+{ "_id" : ObjectId("64dda58af01e02f4390c5ce0"), "first_name" : "Radhika", "last_name" : "Sharma", "date_of_birth" : "1996-06-10", "email" : "radhikasharma10@gmail.com", "phone" : "8795436721" }
+{ "_id" : ObjectId("64dda58af01e02f4390c5ce1"), "first_name" : "Anjana", "last_name" : "Dinesh", "date_of_birth" : "1992-08-27", "email" : "anjanadinesh27@gmail.com", "phone" : "7863205179" }
+{ "_id" : ObjectId("64dda58af01e02f4390c5ce2"), "first_name" : "Abin", "last_name" : "Alias", "date_of_birth" : "1999-11-20", "email" : "abinaliasv20@gmail.com", "phone" : "9456873210" }
+{ "_id" : ObjectId("64dda58af01e02f4390c5ce3"), "first_name" : "Anzal", "last_name" : "Nazar", "date_of_birth" : "1998-02-19", "email" : "anzalnazar19@gmail.com", "phone" : "6871254056" }
+> db.employeedetails.find().pretty()
+{
+        "_id" : ObjectId("64dda58af01e02f4390c5ce0"),
+        "first_name" : "Radhika",
+        "last_name" : "Sharma",
+        "date_of_birth" : "1996-06-10",
+        "email" : "radhikasharma10@gmail.com",
+        "phone" : "8795436721"
+}
+{
+        "_id" : ObjectId("64dda58af01e02f4390c5ce1"),
+        "first_name" : "Anjana",
+        "last_name" : "Dinesh",
+        "date_of_birth" : "1992-08-27",
+        "email" : "anjanadinesh27@gmail.com",
+        "phone" : "7863205179"
+}
+{
+        "_id" : ObjectId("64dda58af01e02f4390c5ce2"),
+        "first_name" : "Abin",
+        "last_name" : "Alias",
+        "date_of_birth" : "1999-11-20",
+        "email" : "abinaliasv20@gmail.com",
+        "phone" : "9456873210"
+}
+{
+        "_id" : ObjectId("64dda58af01e02f4390c5ce3"),
+        "first_name" : "Anzal",
+        "last_name" : "Nazar",
+        "date_of_birth" : "1998-02-19",
+        "email" : "anzalnazar19@gmail.com",
+        "phone" : "6871254056"
+}
+> use Employee
+switched to db Employee
+> show dbs
+local    0.000GB
+merindb  0.000GB
+> db.createCollection("EmployeeDetails")
+{ "ok" : 1 }
+> db.EmployeeDetails.insertMany(
+... [
+... {
+... Empid:101,
+... EmpName:"Ram",
+... Salary:15000,
+... Designation:"Clerk"
+... },
+... {
+... Empid:102,
+... EmpName:"Shyam",
+... Salary:20000,
+... Designation:"Administrator"
+... },
+... {
+... Empid:103,
+... EmpName:"Hari",
+... Salary:10000,
+... Designation:"Supervisor"
+... },
+... {
+... Empid:104,
+... EmpName:"Sita",
+... Salary:15000,
+... Designation:"Clerk"
+... },
+... {
+... Empid:105,
+... EmpName:"Rose",
+... Salary:20000,
+... Designation:"Administrator"
+... },
+... {
+... Empid:106,
+... EmpName:"Maria",
+... Salary:25000,
+... Designation:"Manager"
+... }
+... ]
+... )
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("64ddaca8f01e02f4390c5ce4"),
+                ObjectId("64ddaca8f01e02f4390c5ce5"),
+                ObjectId("64ddaca8f01e02f4390c5ce6"),
+                ObjectId("64ddaca8f01e02f4390c5ce7"),
+                ObjectId("64ddaca8f01e02f4390c5ce8"),
+                ObjectId("64ddaca8f01e02f4390c5ce9")
+        ]
+}
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager"
+}
+>
+>
+> db.EmployeeDetails.find({"EmpName":{$regex:/^S/}}).pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+> db.EmployeeDetails.findOneAndUpdate(
+... {EmpName:"Sita"},
+... {$set:{"EmpSalary":EmpSalary+1000}})
+2023-08-17T11:03:23.307+0530 E QUERY    [thread1] ReferenceError: EmpSalary is not defined :
+@(shell):3:8
+
+> db.EmployeeDetails.findOneAndUpdate(
+... {EmpName:"Sita"},
+... {$inc:{"EmpSalary":EmpSalary+1000}})
+2023-08-17T11:04:19.689+0530 E QUERY    [thread1] ReferenceError: EmpSalary is not defined :
+@(shell):3:8
+
+> db.EmployeeDetails.findOneAndUpdate(
+... {EmpName:"Sita"},
+... {$inc:{EmpSalary:1000}})
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 15000,
+        "Designation" : "Clerk",
+        "EmpSalary" : 1000
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager"
+}
+> db.EmployeeDetails.aggregate([{$unset:"EmpSalary"}])
+assert: command failed: {
+        "ok" : 0,
+        "errmsg" : "Unrecognized pipeline stage name: '$unset'",
+        "code" : 16436
+} : aggregate failed
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+2023-08-17T11:10:41.280+0530 E QUERY    [thread1] Error: command failed: {
+        "ok" : 0,
+        "errmsg" : "Unrecognized pipeline stage name: '$unset'",
+        "code" : 16436
+} : aggregate failed :
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+> db.EmployeeDetails.find({$unset:"EmpSalary"})
+Error: error: {
+        "waitedMS" : NumberLong(0),
+        "ok" : 0,
+        "errmsg" : "unknown top level operator: $unset",
+        "code" : 2
+}
+> db.EmployeeDetails.find([{$unset:"EmpSalary"}])
+Error: error: {
+        "waitedMS" : NumberLong(0),
+        "ok" : 0,
+        "errmsg" : "Failed to parse: filter: [ { $unset: \"EmpSalary\" } ]. 'filter' field must be of BSON type Object.",
+        "code" : 9
+}
+>  db.EmployeeDetails.update({$unset:"EmpSalary"})
+2023-08-17T11:13:45.524+0530 E QUERY    [thread1] Error: need an object :
+DBCollection.prototype._parseUpdate@src/mongo/shell/collection.js:505:1
+DBCollection.prototype.update@src/mongo/shell/collection.js:539:18
+@(shell):1:1
+
+> db.EmployeeDetails.update({EmpId:104},{$unset:{"EmpSalary"}})
+2023-08-17T11:16:11.146+0530 E QUERY    [thread1] SyntaxError: missing : after property id @(shell):1:58
+
+> db.EmployeeDetails.update({Empid:104},{$unset:{"EmpSalary":""}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+>  db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager"
+}
+>
+>
+>
+>
+>
+> db.EmployeeDetails.Update(
+... {EmpName:"Sita"},
+... {$inc:{Salary:1000}})
+2023-08-17T11:20:26.638+0530 E QUERY    [thread1] TypeError: db.EmployeeDetails.Update is not a function :
+@(shell):1:1
+
+>
+> db.EmployeeDetails.update(
+... {EmpName:"Sita"},
+... {$inc:{Salary:1000}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 16000,
+        "Designation" : "Clerk"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator"
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager"
+}
+> db.EmployeeDetails.updateMany({$set:{"DOJ":""}})
+2023-08-17T11:24:48.592+0530 E QUERY    [thread1] TypeError: can't convert undefined to object :
+DBCollection.prototype.updateMany@src/mongo/shell/crud_api.js:561:16
+@(shell):1:1
+
+> db.EmployeeDetails.updateMany({$set:{DOJ:""}})
+2023-08-17T11:25:41.137+0530 E QUERY    [thread1] TypeError: can't convert undefined to object :
+DBCollection.prototype.updateMany@src/mongo/shell/crud_api.js:561:16
+@(shell):1:1
+
+> db.EmployeeDetails.updateMany({},{$set:{DOJ:""}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+>
+>
+>
+>
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk",
+        "DOJ" : ""
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ""
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor",
+        "DOJ" : ""
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 16000,
+        "Designation" : "Clerk",
+        "DOJ" : ""
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ""
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager",
+        "DOJ" : ""
+}
+> db.EmployeeDetails.updateMany({},{$set:{DOJ:new Date()}})
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+>
+>
+>
+>
+>
+>
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 16000,
+        "Designation" : "Clerk",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce9"),
+        "Empid" : 106,
+        "EmpName" : "Maria",
+        "Salary" : 25000,
+        "Designation" : "Manager",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+> db.EmployeeDetails.aggregate([
+... {
+... $match:{
+... Designation:"Clerk"
+... }
+... },
+... {
+... $group:{
+... Designation:"Clerk",
+... TotalSalary:{$sum:"$Salary"}
+... }
+... }
+... ]
+... )
+assert: command failed: {
+        "ok" : 0,
+        "errmsg" : "the group aggregate field 'Designation' must be defined as an expression inside an object",
+        "code" : 15951
+} : aggregate failed
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+2023-08-17T11:38:42.600+0530 E QUERY    [thread1] Error: command failed: {
+        "ok" : 0,
+        "errmsg" : "the group aggregate field 'Designation' must be defined as an expression inside an object",
+        "code" : 15951
+} : aggregate failed :
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+> db.EmployeeDetails.aggregate([
+... {
+... $match:{
+... Designation:"Clerk"
+... }
+... },
+... {
+... $group:{
+... _id:null,
+... Designation:"Clerk",
+... TotalSalary:{$sum:"$Salary"}
+... }
+... }
+... ]
+...
+... )
+assert: command failed: {
+        "ok" : 0,
+        "errmsg" : "the group aggregate field 'Designation' must be defined as an expression inside an object",
+        "code" : 15951
+} : aggregate failed
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+2023-08-17T11:39:48.878+0530 E QUERY    [thread1] Error: command failed: {
+        "ok" : 0,
+        "errmsg" : "the group aggregate field 'Designation' must be defined as an expression inside an object",
+        "code" : 15951
+} : aggregate failed :
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+doassert@src/mongo/shell/assert.js:16:14
+assert.commandWorked@src/mongo/shell/assert.js:290:5
+DBCollection.prototype.aggregate@src/mongo/shell/collection.js:1312:5
+@(shell):1:1
+
+> db.EmployeeDetails.aggregate([
+... {
+... $match:{
+... Designation:"Clerk"
+... }
+... },
+... {
+... $group:{
+... _id:null,
+... TotalSalary:{$sum:"$Salary"}
+... }
+... }
+... ]
+... )
+{ "_id" : null, "TotalSalary" : 31000 }
+>
+>
+>
+>
+>
+> db.EmployeeDetails.deleteOne({Empid:106})
+{ "acknowledged" : true, "deletedCount" : 1 }
+>
+>
+>
+>
+> db.EmployeeDetails.find().pretty()
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce4"),
+        "Empid" : 101,
+        "EmpName" : "Ram",
+        "Salary" : 15000,
+        "Designation" : "Clerk",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce5"),
+        "Empid" : 102,
+        "EmpName" : "Shyam",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce6"),
+        "Empid" : 103,
+        "EmpName" : "Hari",
+        "Salary" : 10000,
+        "Designation" : "Supervisor",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce7"),
+        "Empid" : 104,
+        "EmpName" : "Sita",
+        "Salary" : 16000,
+        "Designation" : "Clerk",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+{
+        "_id" : ObjectId("64ddaca8f01e02f4390c5ce8"),
+        "Empid" : 105,
+        "EmpName" : "Rose",
+        "Salary" : 20000,
+        "Designation" : "Administrator",
+        "DOJ" : ISODate("2023-08-17T05:58:09.609Z")
+}
+>
+>
+>
+>
+>
+> db.createUser({user:"Mohan",pwd:"password",
+... roles:{role:"readWrite",db:"Employee"}})
+2023-08-17T11:49:12.508+0530 E QUERY    [thread1] Error: couldn't add user: "roles" had the wrong type. Expected Array, found Object :
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+DB.prototype.createUser@src/mongo/shell/db.js:1267:15
+@(shell):1:1
+
+> db.createUser({user:"Mohan",pwd:"password",
+... roles:[{role:"readWrite",db:"Employee"}]})
+Successfully added user: {
+        "user" : "Mohan",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "Employee"
+                }
+        ]
+}
+> db.system.users.find({user:"Mohan"})
+> password
+2023-08-17T11:52:35.679+0530 E QUERY    [thread1] ReferenceError: password is not defined :
+@(shell):1:1
+
+>
+
+
+
