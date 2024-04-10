@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .content-container {
+            
+            text-align: center; 
+            width: 80%; 
+            background-size: cover;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            margin: 50px auto; 
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: rgb(235, 228, 228,.2);
+            
+        }
+        #imagePreview {
+            margin: auto; 
+            justify-content: center;
+            align-items: center;
+            max-width: 100%; /* Ensure the image doesn't exceed its container width */
+            display: block;
+            
+        }
+        .image-container {
+            display: flex;
+            justify-content: center; /* Center the contents horizontally */
+            margin-top: 20px;
+        }
+        
+
+       
+        .row .col-8,
+        .row .col-4 {
+            padding-right: 5px; /* Adjust the value as needed */
+            padding-left: 5px;  /* Adjust the value as needed */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("../static/images/bg2.jpg"); /* Replace 'background_image.jpg' with your image file */
+            /*background-size: cover;*/
+            background-size: cover;
+            background-position: center;
+            font-family: 'Fantasy', sans-serif; /* Change the font family as desired */
+            color: #101111; /* Set text color to white */
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+    </style>
+    
+</head>
+<body>
+    
+    <div class="content-container">
+        {% extends "base.html" %} 
+{% block content %}
+        
+        <h1>Malaria Detection</h1>
+    
+    
+        <form id="upload-file" method="post" enctype="multipart/form-data">
+            <label for="imageUpload" class="upload-label"> Upload </label>
+            
+                <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg" />
+            
+            
+
+            
+            
+            <div class="content-container">
+                <h2>Models</h2>
+                <div></div>
+            <button type="button" class="btn btn-secondary" id="btn-resnet18" onclick="selectModel('model1')">ResNet18</button>
+            <button type="button" class="btn btn-secondary" id="btn-vgg16" onclick="selectModel('model2')">VGG16</button>
+            <button type="button" class="btn btn-secondary" id="btn-vgg19" onclick="selectModel('model3')">VGG19</button>
+            <br>
+            <input type="hidden" id="selected-model" name="model" value="">
+            <br>
+            <div>
+                <button type="button" class="btn btn-primary btn-lg" id="btn-predict">Result</button>
+            </div>
+            
+            </div>
+            
+        
+
+            <!--<div class="image-section" style="display: none">
+                <div class="img-preview">
+                    <div id="imagePreview"></div>
+                </div>
+                
+            </div>-->
+            <div class="image-container">
+                <div class="image-section" style="display: none">
+                    <div class="img-preview">
+                        <div id="imagePreview"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+            <div class="loader" style="display: none"></div>
+    
+            <h3 id="result1">
+                <span> </span>
+            </h3>
+            <div class="loader" style="display: none"></div>
+            <h3 id="result2">
+                <span> </span>
+            </h3>
+            <div class="loader" style="display: none"></div>
+            <h3 id="result3">
+                <span> </span>
+            </h3>
+        </form>
+
+        <!--<div class="image-section" style="display: none">
+            <div class="img-preview">
+                <div id="imagePreview"></div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary btn-lg" id="btn-predict">ResNet18</button>
+            </div>-->
+            <!--
+            <div>
+                <button type="button" class="btn btn-primary btn-lg" id="btn-vgg16">VGG16</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary btn-lg" id="btn-vgg19">VGG19</button>
+            </div>-->
+
+            
+        <!--</div>
+        
+
+        <div class="loader" style="display: none"></div>
+
+        <h3 id="result">
+            <span> </span>
+        </h3>-->
+
+        
+        {% endblock %} 
+        
+    </div>
+    
+    
+</body>   
+
+
+</html>
