@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .content-container {
+            text-align: center;
+            width: 80%;
+            background-size: cover;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ccccccc9;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("../static/images/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Fantasy', sans-serif;
+            color: #101111;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <h1>Malaria Detection Result</h1>
+        <p>Model: {{ model }}</p>
+        <p>Prediction: {{ prediction }}</p>
+        <p>Probability: {{ probability }}</p>
+        <button type="button" class="btn btn-primary" onclick="window.history.back()">Go Back</button>
+    </div>
+</body>
+</html>
